@@ -1,10 +1,13 @@
-import "@/styles/globals.css";
-import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { Suspense, useEffect, useState } from "react";
-import Loading from "./loading";
+import Header from "@/components/layout/header";
+import { getOrders, onInitFirebaseApp } from "@/firebase/firebase";
+import "@/styles/globals.css";
 import { useRouter } from "next/router";
+import { Suspense, useEffect, useState } from "react";
 import "react-toastify/ReactToastify.min.css";
+import Loading from "./loading";
+
+onInitFirebaseApp();
 
 export default function App({ Component, pageProps }) {
   const [isFullContentPage, setIsFullContentPage] = useState(false);
@@ -21,6 +24,10 @@ export default function App({ Component, pageProps }) {
     setIsFullContentPage(_isFullContentPage);
     setIsFirstRender(false);
   }, [router]);
+
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   if (isFirstRender) return null;
   if (isFullContentPage) {

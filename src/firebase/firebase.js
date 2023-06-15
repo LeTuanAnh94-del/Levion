@@ -1,7 +1,11 @@
-import firebase, { initializeApp } from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-
+import { initializeApp } from "firebase/app";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore/lite";
 const firebaseConfig = {
   apiKey: "AIzaSyBA1mkfYB9JpdMUHA1dw7woMU5AH82UUSQ",
   projectId: "vietgangz-cbb8e",
@@ -9,9 +13,23 @@ const firebaseConfig = {
   messagingSenderId: "764177501399",
   appId: "1:764177501399:ios:dade0d53fdcb7119ccb492",
 };
+let app = null;
 
-export const appFirebase = initializeApp(firebaseConfig);
+export const onInitFirebaseApp = () => {
+  app = initializeApp(firebaseConfig);
+};
 
-const fireStore = firebase.firestore();
+export const getOrders = async () => {
+  if (!app) return;
+  const db = getFirestore(app);
 
-export default fireStore;
+  const queryBuilder = query(
+    collection(db, "orders"),
+    where("email", "==", "test@gmail.com")
+  );
+
+  const citySnapshot = await getDocs(queryBuilder);
+  const orderList = citySnapshot.docs.map((doc) => doc.data());
+  console.log("orderList", orderList);
+  return orderList;
+};

@@ -1,23 +1,23 @@
-import firestore from "@/firebase/firebase";
+// import firestore from "@/firebase/firebase";
 import { useEffect, useState } from "react";
 
 export default function Courses() {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const collectionRef = firestore.collection("myCollection");
-      const snapshot = await collectionRef.get();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const collectionRef = firestore.collection("myCollection");
+  //     const snapshot = await collectionRef.get();
 
-      const fetchedData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+  //     const fetchedData = snapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
 
-      setData(fetchedData);
-    };
-    fetchData();
-  }, []);
+  //     setData(fetchedData);
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
     <div className="todo-content">
