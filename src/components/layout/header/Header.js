@@ -54,7 +54,7 @@ function Header() {
         <Link href="/">
           <Image
             src={LogoLevion}
-            alt="logo-levion"
+            alt="LogoLevion"
             width={156}
             height={44}
             className="block max-sm:hidden "
@@ -77,7 +77,9 @@ function Header() {
                     href={navbar.href}
                     className={isActive ? "text-primary" : "text-gray"}
                   >
-                    <p className="font-bold text-base">{navbar.title}</p>
+                    <p className="font-bold text-base text-grey_light">
+                      {navbar.title}
+                    </p>
                   </Link>
                   {isLearningResources && (
                     <Arrow
@@ -101,7 +103,7 @@ function Header() {
                   >
                     {navbar.menu?.map((item) => (
                       <Link key={item.id} href={item.href}>
-                        <p className="text-gray">{item.title}</p>
+                        <p className="text-grey_light">{item.title}</p>
                       </Link>
                     ))}
                   </div>
@@ -116,14 +118,16 @@ function Header() {
             <ButtonBase
               type={buttonType.noBackground}
               onClick={() => router.push("/login")}
+              className="flex items-center"
             >
-              <p className="font-bold">Sign in</p>
+              <p className="font-bold text-primary">Sign in</p>
             </ButtonBase>
             <ButtonBase
               type={buttonType.background}
               onClick={() => router.push("/register")}
+              className="flex items-center justify-center"
             >
-              <p className="font-bold">Sign up</p>
+              <p className="font-bold text-white">Sign up</p>
             </ButtonBase>
           </div>
           <div className="flex flex-row gap-4">
