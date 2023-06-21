@@ -1,9 +1,15 @@
 import { toast } from "react-toastify";
 
 export const ShowToast = (message, type) => {
-  toast[type](message, {
-    position: toast.POSITION.TOP__RIGHT,
-    autoClose: 3000,
-    closeButton: false,
+  toast(message, {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    type,
   });
 };

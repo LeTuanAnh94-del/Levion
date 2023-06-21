@@ -9,12 +9,15 @@ import Image from "next/image";
 import Link from "next/link";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import { useRouter } from "next/router";
 
 import { appFirebase } from "../../firebase/firebase";
 import BaseInput from "@/components/baseInput/BaseInput";
 import ButtonBase, { buttonType } from "@/components/button/ButtonBase";
+import { ShowToast } from "@/utils/ShowToast";
 import LogoLevion from "../../public/images/LogoLevion.png";
 import LogoGoogle from "../../public/images/LogoGoogle.png";
+import { Loading } from "@/constant/Icon";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -24,11 +27,10 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const auth = getAuth(appFirebase);
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
@@ -44,7 +46,7 @@ export default function Login() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        console.log("User is logged in:", user);
+        console.log("User is logged in", user);
       } else {
         console.log("User is logged out");
       }
@@ -56,10 +58,26 @@ export default function Login() {
   }, [auth]);
 
   const handleLogin = async (email, password) => {
+    setIsLoading(true);
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
+
+      ShowToast("Login Successful", "success");
+      router.push("/");
     } catch (error) {
-      console.log(error);
+      if (
+        error.code === "auth/user-not-found" ||
+        error.code === "auth/wrong-password"
+      ) {
+        const errorMessage = "Invalid email or password";
+        formik.setErrors({
+          email: errorMessage,
+          password: errorMessage,
+        });
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -69,7 +87,7 @@ export default function Login() {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
-        console.log("Đăng nhập thành công:", user);
+        router.push("/");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -83,7 +101,7 @@ export default function Login() {
       <div className="w3-animate-zoom bg-white gap-6 flex flex-col items-center w-full mx-4 my-[55px] px-6 py-4 rounded sm:mx-[10%] md:mx-[15%] md:px-16 md:py-10 lg:mx-[20%] xl:mx-[30%]">
         <div className="flex flex-col gap-6 items-center w-full md:gap-8">
           <Image src={LogoLevion} alt="LegoLevion" />
-          <p className="font-bold text-2xl text-[#281C42] xl:gap-8 xl:text-[32px] xl:leading-10">
+          <p className="font-bold text-2xl text-[#281C42] xl:gap-8 xl:text-[32px] xl:leading-10 text-center">
             Sign in to your account
           </p>
           <form
@@ -92,7 +110,7 @@ export default function Login() {
           >
             <div className="flex flex-col items-start justify-start w-full xl:pt-2">
               <div className="flex flex-row gap-1">
-                <p className="font-bold text-sm ">Email</p>
+                <p className="font-bold text-sm">Email</p>
                 <span className="text-warning">*</span>
               </div>
               <div className="pb-6 w-full">
@@ -106,7 +124,9 @@ export default function Login() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.email && formik.errors.email ? (
-                  <p className="text-sm text-warning">{formik.errors.email}</p>
+                  <p className="text-sm text-warning absolute w3-animate-opacity">
+                    {formik.errors.email}
+                  </p>
                 ) : null}
               </div>
             </div>
@@ -126,23 +146,25 @@ export default function Login() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.password && formik.errors.email ? (
-                  <p className="text-sm text-warning">
+                  <p className="text-sm text-warning absolute w3-animate-opacity">
                     {formik.errors.email}
                   </p>
-                )}
+                ) : null}
               </div>
             </div>
             <div className="flex flex-col gap-3 items-center w-full">
               <ButtonBase
-                type={buttonType.background}
-                className="w-full lg:px-6 lg:py-4"
+                type={isLoading ? buttonType.disabled : buttonType.background}
+                className="w-full gap-4 lg:px-6 lg:py-4"
+                disabled={isLoading ? true : ""}
               >
-                <p className="font-bold text-white text-base lg:text-lg">
-                  Sign In
+                <p className="font-bold text-white text-base lg:text-lg flex">
+                  {isLoading ? "...loading" : "Sign In"}
                 </p>
+                <div className="relative">{isLoading ? <Loading /> : ""}</div>
               </ButtonBase>
               <p className="font-bold text-base text-[#554766] cursor-pointer">
-                Forgot Password
+                <Link href={"/forgot-password"}>Forgot Password</Link>
               </p>
               <p className="text-base text-[#9387A8] cursor-pointer flex flex-row gap-2">
                 <p>Dont’ have an account?</p>

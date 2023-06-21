@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { Suspense, useEffect, useState } from "react";
 import "react-toastify/ReactToastify.min.css";
 import Loading from "./loading";
+import { ToastContainer } from "react-toastify";
 
 onInitFirebaseApp();
 
@@ -19,15 +20,15 @@ export default function App({ Component, pageProps }) {
 
     const _isFullContentPage =
       typeof window !== "undefined" &&
-      ["/login", "/register"].includes(router.pathname);
+      ["/login", "/register", "/forgot-password"].includes(router.pathname);
 
     setIsFullContentPage(_isFullContentPage);
     setIsFirstRender(false);
   }, [router]);
 
-  useEffect(() => {
-    getOrders();
-  }, []);
+  // useEffect(() => {
+  //   getOrders();
+  // }, []);
 
   if (isFirstRender) return null;
   if (isFullContentPage) {
@@ -39,6 +40,7 @@ export default function App({ Component, pageProps }) {
       <Header />
       <Suspense fallback={<Loading />}>
         <Component {...pageProps} />
+        <ToastContainer />
       </Suspense>
       <Footer />
     </div>

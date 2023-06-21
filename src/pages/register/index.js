@@ -55,7 +55,7 @@ export default function Register() {
 
       setIsLoading(false);
       ShowToast("Registration successful", "success");
-      await delay(3000);
+      await delay(2000);
       router.push("/login");
     } catch (error) {
       throw error;
@@ -144,8 +144,8 @@ export default function Register() {
                 className="w-full text-white font-bold text-base flex items-center"
                 disabled={isLoading ? true : ""}
               >
-                <p>Create Account</p>
-                {isLoading ? <Loading className="absolute ml-96" /> : ""}
+                {isLoading ? <Loading /> : ""}
+                <p>{isLoading ? "...loading" : "Create Account"}</p>
               </ButtonBase>
               <p className="text-base text-[#9387A8] text-center">
                 Already have an account? <b>Sign in</b>
