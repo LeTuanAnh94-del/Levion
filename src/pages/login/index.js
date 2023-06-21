@@ -15,9 +15,9 @@ import { appFirebase } from "../../firebase/firebase";
 import BaseInput from "@/components/baseInput/BaseInput";
 import ButtonBase, { buttonType } from "@/components/button/ButtonBase";
 import { ShowToast } from "@/utils/ShowToast";
+import { Loading } from "@/constant/Icon";
 import LogoLevion from "../../public/images/LogoLevion.png";
 import LogoGoogle from "../../public/images/LogoGoogle.png";
-import { Loading } from "@/constant/Icon";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -101,7 +101,7 @@ export default function Login() {
       <div className="w3-animate-zoom bg-white gap-6 flex flex-col items-center w-full mx-4 my-[55px] px-6 py-4 rounded sm:mx-[10%] md:mx-[15%] md:px-16 md:py-10 lg:mx-[20%] xl:mx-[30%]">
         <div className="flex flex-col gap-6 items-center w-full md:gap-8">
           <Image src={LogoLevion} alt="LegoLevion" />
-          <p className="font-bold text-2xl text-[#281C42] xl:gap-8 xl:text-[32px] xl:leading-10 text-center">
+          <p className="font-bold text-2xl text-darker_grey xl:gap-8 xl:text-[32px] xl:leading-10 text-center">
             Sign in to your account
           </p>
           <form
@@ -163,29 +163,29 @@ export default function Login() {
                 </p>
                 <div className="relative">{isLoading ? <Loading /> : ""}</div>
               </ButtonBase>
-              <p className="font-bold text-base text-[#554766] cursor-pointer">
+              <p className="font-bold text-base text-grey cursor-pointer">
                 <Link href={"/forgot-password"}>Forgot Password</Link>
               </p>
-              <p className="text-base text-[#9387A8] cursor-pointer flex flex-row gap-2">
+              <p className="text-base text-grey_light cursor-pointer flex flex-row gap-2">
                 <p>Dont’ have an account?</p>
-                <b className="text-[#554766]">
+                <b className="text-grey">
                   <Link href={"/register"}>Sign up</Link>
                 </b>
               </p>
             </div>
           </form>
           <div className="flex flex-row w-full items-center gap-[23px]">
-            <div className="h-[2px] w-full bg-[#CAC1D8]"></div>
-            <p className="text-[#CAC1D8]">OR</p>
-            <div className="h-[2px] w-full bg-[#CAC1D8]"></div>
+            <div className="h-[2px] w-full bg-grey_lighter"></div>
+            <p className="text-grey_lighter">OR</p>
+            <div className="h-[2px] w-full bg-grey_lighter"></div>
           </div>
           <ButtonBase
             onClick={handleLoginGoogle}
             type={buttonType.noBackground}
-            className="border-[#9387A8] w-full gap-2 flex flex-row items-center"
+            className="border-grey_light w-full gap-2 flex flex-row items-center"
           >
             <Image src={LogoGoogle} alt="LogoGoogle" />
-            <p className="font-bold text-base text-[#362355]">
+            <p className="font-bold text-base text-dark_grey">
               Continue with Google
             </p>
           </ButtonBase>

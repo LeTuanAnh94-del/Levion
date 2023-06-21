@@ -52,7 +52,7 @@ export default function ForgotPassword() {
       <div className="w3-animate-zoom bg-white gap-6 flex flex-col items-center w-full mx-4 my-[55px] px-6 py-4 rounded sm:mx-[10%] md:mx-[15%] md:px-16 md:py-10 lg:mx-[20%] xl:mx-[30%]">
         <div className="flex flex-col gap-6 items-center w-full md:gap-8">
           <Image src={LogoLevion} alt="LogoLevion" />
-          <p className="font-bold text-2xl text-[#281C42] xl:gap-8 xl:text-[32px] xl:leading-10 text-center">
+          <p className="font-bold text-2xl text-darker_grey xl:gap-8 xl:text-[32px] xl:leading-10 text-center">
             Create New Password
           </p>
           <form
