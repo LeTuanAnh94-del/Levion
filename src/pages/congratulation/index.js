@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import LogoLevion from "../../public/images/LogoLevion.png";
 import BannerCongratulation from "../../public/images/BannerCongratulation.png";
@@ -22,12 +23,14 @@ export default function Congratulation() {
             <p className="text-xl text-grey text-center max-sm:text-base">
               Let’s Discover Vietnamese with us
             </p>
-          </div>  
-          <ButtonBase type={buttonType.background} className="w-full">
-            <p className="text-center text-white text-lg leading-6 font-bold max-sm:text-base">
-              Let’s Start
-            </p>
-          </ButtonBase>
+          </div>
+          <Link href={"/login"} className="w-full">
+            <ButtonBase type={buttonType.background} className="w-full">
+              <p className="text-center text-white text-lg leading-6 font-bold max-sm:text-base">
+                Let’s Start
+              </p>
+            </ButtonBase>
+          </Link>
         </div>
       </div>
     </div>
