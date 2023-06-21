@@ -2,6 +2,7 @@ import Image from "next/image";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { useRouter } from "next/router";
 
 import LogoLevion from "../../public/images/LogoLevion.png";
 import BaseInput from "@/components/baseInput/BaseInput";
@@ -16,6 +17,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function ForgotPassword() {
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -41,7 +43,7 @@ export default function ForgotPassword() {
 
     try {
       await sendPasswordResetEmail(auth, email);
-      console.log("Password reset email sent successfully");
+      router.push("/congratulation");
     } catch (error) {
       console.error("Error sending password reset email:", error);
     }

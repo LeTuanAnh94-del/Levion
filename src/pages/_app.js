@@ -20,7 +20,9 @@ export default function App({ Component, pageProps }) {
 
     const _isFullContentPage =
       typeof window !== "undefined" &&
-      ["/login", "/register", "/forgot-password"].includes(router.pathname);
+      ["/login", "/register", "/forgot-password", "/congratulation"].includes(
+        router.pathname
+      );
 
     setIsFullContentPage(_isFullContentPage);
     setIsFirstRender(false);
