@@ -8,8 +8,8 @@ import { dataNavbar } from "@/constant/navbar";
 import { Arrow, IconCart, IconMenu } from "@/constant/Icon";
 import LogoLevion from "@/public/images/LogoLevion.png";
 import ButtonBase, { buttonType } from "@/components/button/ButtonBase";
-import { Logo } from "@/constant/image";
 import Menu from "./menu";
+import LogoNoName from "../../../public/images/LogoNoName.png";
 
 function Header() {
   const pathname = usePathname();
@@ -59,12 +59,7 @@ function Header() {
             height={44}
             className="block max-sm:hidden "
           />
-          <Logo
-            className="sm:hidden"
-            currentColor="#9453FF"
-            width={40}
-            height={40}
-          />
+          <Image src={LogoNoName} alt="LogoNoname" className="sm:hidden" />
         </Link>
         <ul className="flex flex-row gap-6 max-lg:hidden">
           {dataNavbar.map((navbar) => {
@@ -75,9 +70,9 @@ function Header() {
                 <div className="flex flex-row items-center">
                   <Link
                     href={navbar.href}
-                    className={isActive ? "text-primary" : "text-gray"}
+                    className={isActive ? "text-purple-200" : "text-grey_light"}
                   >
-                    <p className="font-bold text-base text-grey_light">
+                    <p className="font-bold text-base transition-all ease-in duration-75 hover:text-primary">
                       {navbar.title}
                     </p>
                   </Link>
@@ -87,8 +82,8 @@ function Header() {
                       isDropdown={isDropdown}
                       className={
                         isDropdown
-                          ? "cursor-pointer rotate-90"
-                          : "cursor-pointer"
+                          ? "cursor-pointer transition-transform duration-200 transform rotate-90"
+                          : "cursor-pointer transition-transform duration-200 transform"
                       }
                     />
                   )}
@@ -97,7 +92,7 @@ function Header() {
                   <div
                     className={
                       navbar.title === "Learning Resources"
-                        ? "flex flex-col pl-4 pr-4 pt-4 pb-4 gap-4 absolute bg-white "
+                        ? "flex flex-col pl-4 pr-4 pt-4 pb-4 gap-4 absolute bg-white rounded"
                         : ""
                     }
                   >
@@ -116,18 +111,22 @@ function Header() {
         <div className="flex flex-row-reverse gap-4 items-center">
           <div className="max-lg:hidden flex flex-row gap-4">
             <ButtonBase
-              type={buttonType.noBackground}
+              type={buttonType.secondary}
               onClick={() => router.push("/login")}
-              className="flex items-center"
+              className="px-6 py-2"
             >
-              <p className="font-bold text-primary">Sign in</p>
+              <p className="font-bold transition-all ease-in duration-75">
+                Sign in
+              </p>
             </ButtonBase>
             <ButtonBase
-              type={buttonType.background}
+              type={buttonType.primary}
               onClick={() => router.push("/register")}
-              className="flex items-center justify-center"
+              className="px-6 py-2"
             >
-              <p className="font-bold text-white">Sign up</p>
+              <p className="font-bold transition-all ease-in duration-75">
+                Sign up
+              </p>
             </ButtonBase>
           </div>
           <div className="flex flex-row gap-4">

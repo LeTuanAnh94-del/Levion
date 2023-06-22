@@ -1,16 +1,17 @@
 const classButton = {
-  background:
-    "flex justify-center border border-solid bg-primary rounded py-2 px-6 border-none sm:py-4",
-  noBackground:
-    "flex justify-center border border-solid border-primary bg-white rounded py-2 px-6",
-  disabled:
-    "flex justify-center border border-solid bg-[#AA77FF] rounded py-2 px-6 border-none",
+  primary:
+    "flex flex-row justify-center gap-1 bg-primary rounded text-white transition-all ease-in duration-75 hover:bg-grey_dark",
+  secondary:
+    "flex flex-row justify-center gap-1 border border-solid border-primary rounded text-primary hover:bg-primary hover:text-white",
+  disabled1: "flex flex-row justify-center gap-1 bg-grey_lighter rounded",
+  disabled2: "flex flex-row justify-center gap-1 bg-grey_lightest rounded",
 };
 
 export const buttonType = {
-  background: "background",
-  noBackground: "noBackground",
-  disabled: "disabled",
+  primary: "primary",
+  secondary: "secondary",
+  disabled1: "disabled1",
+  disabled2: "disabled2",
 };
 
 export default function ButtonBase({
