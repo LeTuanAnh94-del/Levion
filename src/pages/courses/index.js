@@ -8,17 +8,22 @@ export default function Courses() {
   const [cityFilter, setCityFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [phoneSearch, setPhoneSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { height, refHeight } = useHeight();
 
   const fetchData = async () => {
+    setIsLoading(true);
+
     try {
       const orderList = await getOrders(
         categoryFilter,
         cityFilter,
         phoneSearch
       );
+
       setData(orderList);
+      setIsLoading(false);
     } catch (error) {
       console.log("fetchData ~ error:", error);
     }
@@ -120,6 +125,7 @@ export default function Courses() {
           reorder={true}
           responsive
           height={height}
+          isLoading={isLoading}
         />
       </div>
     </div>

@@ -3,7 +3,7 @@ import DataTable from "react-data-table-component";
 import Columns from "../../constant/TableColumns";
 import TableStyles from "@/constant/TableStyles";
 
-const DataTableComponent = memo(({ data, pending, height }) => {
+const DataTableComponent = memo(({ data, isLoading, height }) => {
   const columns = Columns();
 
   const tableHeight = window.innerHeight - (height + 230);
@@ -17,7 +17,7 @@ const DataTableComponent = memo(({ data, pending, height }) => {
         data={data}
         reorder={true}
         responsive
-        progressPending={pending}
+        progressPending={isLoading}
         customStyles={TableStyles}
         pagination
         fixedHeader
