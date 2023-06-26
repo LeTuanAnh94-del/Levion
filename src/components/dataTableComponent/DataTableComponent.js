@@ -7,10 +7,6 @@ const DataTableComponent = memo(({ data, pending, height }) => {
   const columns = Columns();
 
   const tableHeight = window.innerHeight - (height + 230);
-  console.log(
-    "🚀 ~ file: DataTableComponent.js:10 ~ DataTableComponent ~ tableHeight:",
-    tableHeight
-  );
 
   return (
     <div>

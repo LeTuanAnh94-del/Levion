@@ -83,7 +83,7 @@ export const getOrders = async (categoryFilter, cityFilter, phoneSearch) => {
       )
     );
   } else {
-    if (categoryFilter === "" && cityFilter === "") {
+    if (categoryFilter === "" && cityFilter === "" && phoneSearch === "") {
       queryBuilder = query(collection(db, "orders"));
     } else {
       queryBuilder = query(
@@ -99,6 +99,6 @@ export const getOrders = async (categoryFilter, cityFilter, phoneSearch) => {
 
   const citySnapshot = await getDocs(queryBuilder);
   const orderList = citySnapshot.docs.map((doc) => doc.data());
-  
+
   return orderList;
 };
