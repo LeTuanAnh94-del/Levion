@@ -106,13 +106,6 @@ const Columns = () => {
       width: "500px",
     },
     {
-      name: "Hiển thị tổng giá tiền",
-      selector: (row) => {
-        return row.showTotalPriceOrder ? "Có" : "Không";
-      },
-      width: "200px",
-    },
-    {
       name: "Giá bàn",
       selector: (row) =>
         row.table.description === undefined ? null : (
