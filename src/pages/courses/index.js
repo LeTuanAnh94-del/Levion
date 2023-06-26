@@ -51,63 +51,67 @@ export default function Courses() {
     <div className="flex flex-col mt-4 w-full gap-8">
       <div className="flex flex-col">
         <div className="flex flex-col gap-6 mx-4" ref={refHeight}>
-          <div className="flex flex-row w-full justify-end gap-7">
-            <div>
-              <label
-                htmlFor="category"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Thể Loại
-              </label>
-              <select
-                value={categoryFilter}
-                onChange={handleCategoryChange}
-                id="category"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              >
-                <option value="" selected={true}>
-                  Chọn thể loại
-                </option>
-                <option value="glamping">Cắm trại</option>
-                <option value="horse_clubs">Cưỡi ngựa</option>
-                <option value="beach_clubs">Đi biển</option>
-              </select>
+          <div className="flex flex-row w-full justify-end gap-7 max-sm:flex-col ">
+            <div className="flex flex-row gap-7 justify-end max-sm:justify-between">
+              <div>
+                <label
+                  htmlFor="category"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Thể Loại
+                </label>
+                <select
+                  value={categoryFilter}
+                  onChange={handleCategoryChange}
+                  id="category"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+                >
+                  <option value="" selected={true}>
+                    Chọn thể loại
+                  </option>
+                  <option value="glamping">Cắm trại</option>
+                  <option value="horse_clubs">Cưỡi ngựa</option>
+                  <option value="beach_clubs">Đi biển</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="city"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Địa điểm
+                </label>
+                <select
+                  value={cityFilter}
+                  onChange={handleCityChange}
+                  id="city"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+                >
+                  <option value="" selected={true}>
+                    Chọn địa điểm
+                  </option>
+                  <option value="lamdong">Lâm Đồng</option>
+                  <option value="hanoi">Hà Nội</option>
+                  <option value="saigon">Sài Gòn</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label
-                htmlFor="city"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Địa điểm
-              </label>
-              <select
-                value={cityFilter}
-                onChange={handleCityChange}
-                id="city"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              >
-                <option value="" selected={true}>
-                  Chọn địa điểm
-                </option>
-                <option value="lamdong">Lâm Đồng</option>
-                <option value="hanoi">Hà Nội</option>
-                <option value="saigon">Sài Gòn</option>
-              </select>
-            </div>
-            <div className="flex flex-col ">
-              <label
-                htmlFor="phone"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Số điện thoại
-              </label>
-              <input
-                value={phoneSearch}
-                onChange={handlePhoneSearch}
-                type="text"
-                id="phone"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              />
+            <div className="">
+              <div className="flex flex-col ">
+                <label
+                  htmlFor="phone"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Số điện thoại
+                </label>
+                <input
+                  value={phoneSearch}
+                  onChange={handlePhoneSearch}
+                  type="text"
+                  id="phone"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+                />
+              </div>
             </div>
           </div>
           <div className="w-full justify-end flex">
