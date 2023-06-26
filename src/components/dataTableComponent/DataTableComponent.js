@@ -3,12 +3,20 @@ import DataTable from "react-data-table-component";
 import Columns from "../../constant/TableColumns";
 import TableStyles from "@/constant/TableStyles";
 
-const DataTableComponent = memo(({ data, pending }) => {
+const DataTableComponent = memo(({ data, pending, height }) => {
   const columns = Columns();
+
+  const tableHeight = window.innerHeight - (height + 230);
+  console.log(
+    "🚀 ~ file: DataTableComponent.js:10 ~ DataTableComponent ~ tableHeight:",
+    tableHeight
+  );
 
   return (
     <div>
       <DataTable
+        noHeader
+        noTableHead
         columns={columns}
         data={data}
         reorder={true}
@@ -16,6 +24,14 @@ const DataTableComponent = memo(({ data, pending }) => {
         progressPending={pending}
         customStyles={TableStyles}
         pagination
+        fixedHeader
+        subHeader
+        fixedHeaderScrollHeight={tableHeight.toString() + "px"}
+        highlightOnHover
+        selectableRowsVisibleOnly
+        persistTableHead
+        selectableRowsHighlight
+        expandableRowsHideExpander
       />
     </div>
   );

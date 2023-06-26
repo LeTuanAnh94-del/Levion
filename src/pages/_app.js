@@ -28,9 +28,9 @@ export default function App({ Component, pageProps }) {
     setIsFirstRender(false);
   }, [router]);
 
-  // useEffect(() => {
-  //   getOrders();
-  // }, []);
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   if (isFirstRender) return null;
   if (isFullContentPage) {
@@ -44,7 +44,7 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
         <ToastContainer />
       </Suspense>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

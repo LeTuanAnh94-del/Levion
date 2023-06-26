@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import { dataNavbar } from "@/constant/navbar";
 import { Arrow, IconCart, IconMenu } from "@/constant/Icon";
-import LogoLevion from "@/public/images/LogoLevion.png";
+import LogoVietGangz from "../../../public/images/LogoVietGang.png";
 import ButtonBase, { buttonType } from "@/components/button/ButtonBase";
 import Menu from "./menu";
 import LogoNoName from "../../../public/images/LogoNoName.png";
@@ -50,18 +50,24 @@ function Header() {
 
   return (
     <div>
-      <div className="flex flex-row items-center w-full justify-between px-20 py-8 shadow-xl max-xl:px-10 max-lg:px-4">
+      <div className="flex flex-row items-center w-full justify-between px-20 shadow-xl max-xl:px-10 max-lg:px-4">
         <Link href="/">
           <Image
-            src={LogoLevion}
+            src={LogoVietGangz}
             alt="LogoLevion"
-            width={156}
-            height={44}
-            className="block max-sm:hidden "
+            width={100}
+            height={40}
+            // className="block max-sm:hidden "
           />
-          <Image src={LogoNoName} alt="LogoNoname" className="sm:hidden" />
+          {/* <Image
+            src={LogoVietGangz}
+            alt="LogoNoname"
+            className="sm:hidden"
+            width={100}
+            height={40}
+          /> */}
         </Link>
-        <ul className="flex flex-row gap-6 max-lg:hidden">
+        {/* <ul className="flex flex-row gap-6 max-lg:hidden">
           {dataNavbar.map((navbar) => {
             const isActive = pathname.startsWith(navbar.href);
             const isLearningResources = navbar.title === "Learning Resources";
@@ -106,9 +112,9 @@ function Header() {
               </div>
             );
           })}
-        </ul>
+        </ul> */}
 
-        <div className="flex flex-row-reverse gap-4 items-center">
+        {/* <div className="flex flex-row-reverse gap-4 items-center">
           <div className="max-lg:hidden flex flex-row gap-4">
             <ButtonBase
               type={buttonType.secondary}
@@ -137,9 +143,9 @@ function Header() {
               className="lg:hidden cursor-pointer"
             />
           </div>
-        </div>
+        </div> */}
       </div>
-      {isOpenMenu && <Menu />}
+      {/* {isOpenMenu && <Menu />} */}
     </div>
   );
 }

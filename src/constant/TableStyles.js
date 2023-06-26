@@ -2,6 +2,7 @@ const TableStyles = {
   rows: {
     style: {
       minHeight: "72px",
+      cursor: "pointer",
     },
   },
   headCells: {
@@ -16,7 +17,6 @@ const TableStyles = {
     style: {
       paddingLeft: "8px",
       paddingRight: "8px",
- 
     },
   },
 };
