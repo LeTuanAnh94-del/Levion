@@ -11,8 +11,6 @@ const DataTableComponent = memo(({ data, isLoading, height }) => {
   return (
     <div>
       <DataTable
-        noHeader
-        noTableHead
         columns={columns}
         data={data}
         reorder={true}
