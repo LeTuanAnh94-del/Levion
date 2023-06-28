@@ -1,15 +1,32 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import DataTable from "react-data-table-component";
 import Columns from "../../constant/TableColumns";
 import TableStyles from "@/constant/TableStyles";
+import Modal from "../modal/Modal";
 
 const DataTableComponent = memo(({ data, isLoading, height }) => {
   const columns = Columns();
-
   const tableHeight = window.innerHeight - (height + 230);
+
+  const [selectedRowData, setSelectedRowData] = useState(null);
+  let [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal(row) {
+    setSelectedRowData(row);
+    setIsOpen(true);
+  }
 
   return (
     <div>
+      <Modal
+        isOpen={isOpen}
+        closeModal={closeModal}
+        data={selectedRowData}
+      />
       <DataTable
         noTableHead={isLoading ? true : false}
         columns={columns}
@@ -27,6 +44,7 @@ const DataTableComponent = memo(({ data, isLoading, height }) => {
         persistTableHead
         selectableRowsHighlight
         expandableRowsHideExpander
+        onRowClicked={(row) => openModal(row)}
       />
     </div>
   );

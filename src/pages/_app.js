@@ -1,19 +1,35 @@
-import Footer from "@/components/layout/footer";
-import Header from "@/components/layout/header";
-import { getOrders, onInitFirebaseApp } from "@/firebase/firebase";
-import "@/styles/globals.css";
-import { useRouter } from "next/router";
+import { getAuth } from "firebase/auth";
+import { ToastContainer } from "react-toastify";
 import { Suspense, useEffect, useState } from "react";
 import "react-toastify/ReactToastify.min.css";
+import "@/styles/globals.css";
+
+import Header from "@/components/layout/header";
 import Loading from "./loading";
-import { ToastContainer } from "react-toastify";
+import { getOrders, onInitFirebaseApp } from "@/firebase/firebase";
+import { useRouter } from "next/router";
+import { appFirebase } from "../firebase/firebase";
 
 onInitFirebaseApp();
 
 export default function App({ Component, pageProps }) {
   const [isFullContentPage, setIsFullContentPage] = useState(false);
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const auth = getAuth(appFirebase);
   const router = useRouter();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        router.push("/");
+      } else {
+        router.push("/login");
+      }
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [auth, router]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -44,7 +60,6 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
         <ToastContainer />
       </Suspense>
-      {/* <Footer /> */}
     </div>
   );
 }

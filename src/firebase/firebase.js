@@ -11,9 +11,6 @@ import {
 } from "firebase/firestore/lite";
 
 const firebaseConfig = {
-  // apiKey: "AIzaSyBLPeieDSs-fi75wzML5WMfjNwej7NFZ6U",
-  // authDomain: "levion-2057d.firebaseapp.com",
-  // projectId: "levion-2057d",
   apiKey: "AIzaSyBA1mkfYB9JpdMUHA1dw7woMU5AH82UUSQ",
   projectId: "vietgangz-cbb8e",
   storageBucket: "vietgangz-cbb8e.appspot.com",
@@ -32,6 +29,23 @@ export const onInitFirebaseApp = () => {
 };
 
 export { auth };
+
+export const checkAdminRole = async (email) => {
+  const db = getFirestore(app);
+  const usersRef = collection(db, "users");
+  const querySnapshot = await getDocs(
+    query(usersRef, where("email", "==", email))
+  );
+
+  if (querySnapshot.empty) {
+    return false;
+  }
+
+  const userData = querySnapshot.docs[0].data();
+  const role = userData.role;
+
+  return role === "admin";
+};
 
 export const getOrders = async (categoryFilter, cityFilter, phoneSearch) => {
   if (!app) return;

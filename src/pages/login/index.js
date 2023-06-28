@@ -1,23 +1,15 @@
-import {
-  GoogleAuthProvider,
-  getAuth,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
-import { useEffect, useState } from "react";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
+import { ToastContainer } from "react-toastify";
 
-import { appFirebase } from "../../firebase/firebase";
 import BaseInput from "@/components/baseInput/BaseInput";
-import ButtonBase, { buttonType } from "@/components/button/ButtonBase";
+import { appFirebase, checkAdminRole } from "../../firebase/firebase";
 import { ShowToast } from "@/utils/ShowToast";
-import { Loading } from "@/constant/Icon";
-import LogoLevion from "../../public/images/LogoLevion.png";
-import LogoGoogle from "../../public/images/LogoGoogle.png";
+import Logo from "../../public/images/LogoVietGang.png";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -28,10 +20,8 @@ const validationSchema = Yup.object().shape({
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
-
   const auth = getAuth(appFirebase);
   const router = useRouter();
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -43,66 +33,44 @@ export default function Login() {
     },
   });
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        console.log("User is logged in", user);
-      } else {
-        console.log("User is logged out");
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [auth]);
-
   const handleLogin = async (email, password) => {
     setIsLoading(true);
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
+    const isAdmin = await checkAdminRole(email);
 
-      ShowToast("Login Successful", "success");
-      router.push("/");
-    } catch (error) {
-      if (
-        error.code === "auth/user-not-found" ||
-        error.code === "auth/wrong-password"
-      ) {
-        const errorMessage = "Invalid email or password";
-        formik.setErrors({
-          email: errorMessage,
-          password: errorMessage,
-        });
+    if (isAdmin) {
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+
+        ShowToast("Đăng nhập thành công", "success");
+
+        router.push("/");
+      } catch (error) {
+        if (
+          error.code === "auth/user-not-found" ||
+          error.code === "auth/wrong-password"
+        ) {
+          const errorMessage = "Invalid email or password";
+
+          formik.setErrors({
+            email: errorMessage,
+            password: errorMessage,
+          });
+        }
       }
-    } finally {
+    } else {
+      ShowToast("Bạn không có quyền truy cập", "error");
       setIsLoading(false);
     }
   };
 
-  const handleLoginGoogle = () => {
-    const provider = new GoogleAuthProvider();
-
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const user = result.user;
-        router.push("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("Lỗi đăng nhập:", errorCode, errorMessage);
-      });
-  };
-
   return (
-    <div className="bg-purple-200 w-full h-[100vh] flex justify-center items-center xl:h-full">
+    <div className="bg-grey w-full h-[100vh] flex justify-center items-center">
       <div className="w3-animate-zoom bg-white gap-6 flex flex-col items-center w-full mx-4 my-[55px] px-6 py-4 rounded sm:mx-[10%] md:mx-[15%] md:px-16 md:py-10 lg:mx-[20%] xl:mx-[30%]">
         <div className="flex flex-col gap-6 items-center w-full md:gap-8">
-          <Image src={LogoLevion} alt="LegoLevion" />
+          <Image src={Logo} alt="Logo" width={100} height={50} />
           <p className="font-bold text-2xl text-darker_grey xl:gap-8 xl:text-[32px] xl:leading-10 text-center">
-            Sign in to your account
+            Đăng nhập
           </p>
           <form
             onSubmit={formik.handleSubmit}
@@ -153,44 +121,36 @@ export default function Login() {
               </div>
             </div>
             <div className="flex flex-col gap-3 items-center w-full">
-              <ButtonBase
-                type={isLoading ? buttonType.disabled : buttonType.background}
-                className="w-full gap-4 lg:px-6 lg:py-4"
+              <button
                 disabled={isLoading ? true : ""}
+                className="w-full justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-4 text-center mr-2 inline-flex items-center"
               >
-                <p className="font-bold text-white text-base lg:text-lg flex">
-                  {isLoading ? "...loading" : "Sign In"}
-                </p>
-                <div className="relative">{isLoading ? <Loading /> : ""}</div>
-              </ButtonBase>
-              <p className="font-bold text-base text-grey cursor-pointer">
-                <Link href={"/forgot-password"}>Forgot Password</Link>
-              </p>
-              <p className="text-base text-grey_light cursor-pointer flex flex-row gap-2">
-                <p>Dont’ have an account?</p>
-                <b className="text-grey">
-                  <Link href={"/register"}>Sign up</Link>
-                </b>
-              </p>
+                {isLoading && (
+                  <svg
+                    aria-hidden="true"
+                    role="status"
+                    className="inline w-4 h-4 mr-3 text-white animate-spin"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="#E5E7EB"
+                    />
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                )}
+                <b className="text-base">Đăng nhập</b>
+              </button>
             </div>
           </form>
-          <div className="flex flex-row w-full items-center gap-[23px]">
-            <div className="h-[2px] w-full bg-grey_lighter"></div>
-            <p className="text-grey_lighter">OR</p>
-            <div className="h-[2px] w-full bg-grey_lighter"></div>
-          </div>
-          <ButtonBase
-            onClick={handleLoginGoogle}
-            type={buttonType.noBackground}
-            className="border-grey_light w-full gap-2 flex flex-row items-center"
-          >
-            <Image src={LogoGoogle} alt="LogoGoogle" />
-            <p className="font-bold text-base text-dark_grey">
-              Continue with Google
-            </p>
-          </ButtonBase>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

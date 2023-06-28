@@ -3,19 +3,19 @@ const Columns = () => {
     {
       name: "Thể loại",
       selector: (row) => {
-        return <p>{row.categoryId}</p>;
+        return <p>{row?.categoryId}</p>;
       },
     },
     {
       name: "Địa điểm",
       selector: (row) => {
-        return <p>{row.city}</p>;
+        return <p>{row?.city}</p>;
       },
     },
     {
       name: "Ngày tạo",
       selector: (row) => {
-        const timestamp = row.createdAt;
+        const timestamp = row?.createdAt;
         const date = new Date(timestamp.seconds * 1000);
         return date.toLocaleString();
       },
@@ -25,7 +25,7 @@ const Columns = () => {
     {
       name: "Ngày",
       selector: (row) => {
-        const { startDate, endDate } = row.date;
+        const { startDate, endDate } = row?.date;
         const startDateString = startDate
           ? startDate.toDate().toLocaleDateString()
           : "";
@@ -44,52 +44,53 @@ const Columns = () => {
     },
     {
       name: "Email",
-      selector: (row) => row.email,
+      selector: (row) => row?.email,
       width: "200px",
     },
     {
       name: "Vé miễn phí",
       selector: (row) => {
-        return row.isFreeTicketWithMenuSelect ? "Có" : "Không";
+        return row?.isFreeTicketWithMenuSelect ? "Có" : "Không";
       },
       width: "150px",
     },
     {
       name: "BBQ",
       selector: (row) => {
-        return row.isHaveBBQ ? "Có" : "Không";
+        return row?.isHaveBBQ ? "Có" : "Không";
       },
     },
     {
       name: "Bàn",
       selector: (row) => {
-        return row.isHaveTable ? "Có" : "Không";
+        return row?.isHaveTable ? "Có" : "Không";
       },
     },
     {
       name: "Lều",
       selector: (row) => {
-        return row.isHaveTent ? "Có" : "Không";
+        return row?.isHaveTent ? "Có" : "Không";
       },
     },
     {
       name: "Menu",
       selector: (row) => {
-        return row.menuIndex ? "Có" : "Không";
+        return row?.menuName ? row?.menuName : "Không";
       },
+      width: "250px",
     },
     {
       name: "Name",
-      selector: (row) => row.name,
+      selector: (row) => row?.name,
     },
     {
       name: "Số người",
       selector: (row) =>
-        row.peopleInputState.value ? (
+        row?.peopleInputState?.value ? (
           <div className="flex flex-col gap-1">
-            <p>Người lớn: {row.peopleInputState.value.adult}</p>
-            <p>Trẻ con:{row.peopleInputState.value.babi}</p>
-            <p>Trẻ em :{row.peopleInputState.value.children}</p>
+            <p>Người lớn: {row?.peopleInputState?.value?.adult}</p>
+            <p>Trẻ con:{row?.peopleInputState?.value?.babi}</p>
+            <p>Trẻ em :{row?.peopleInputState?.value?.children}</p>
           </div>
         ) : (
           ""
@@ -97,21 +98,21 @@ const Columns = () => {
     },
     {
       name: "Số điện thoại",
-      selector: (row) => row.phone,
+      selector: (row) => row?.phone,
       width: "150px ",
     },
     {
       name: "Tên dịch vụ",
-      selector: (row) => row.servicesName,
+      selector: (row) => row?.servicesName,
       width: "500px",
     },
     {
       name: "Giá bàn",
       selector: (row) =>
-        row.table.description === undefined ? null : (
+        row?.table?.description === undefined ? null : (
           <div className="flex flex-col gap-1">
-            <p>Mô tả: {row.table.description}</p>
-            <p>Giá: {row.table.value}</p>
+            <p>Mô tả: {row?.table?.description}</p>
+            <p>Giá: {row?.table?.value}</p>
           </div>
         ),
       width: "300px",
@@ -119,17 +120,17 @@ const Columns = () => {
     {
       name: "Giá lều",
       selector: (row) =>
-        row.tent.title === undefined ? null : (
-          <p>Giá: {row.tent.description}</p>
+        row?.tent?.title === undefined ? null : (
+          <p>Giá: {row?.tent?.description}</p>
         ),
     },
     {
       name: "Giá vé người lớn",
       selector: (row) =>
-        row.tickets.adult ? (
+        row?.tickets?.adult ? (
           <div>
-            <p>Mô tả: {row.tickets.adult.description}</p>
-            <p>Giá: {row.tickets.adult.value}</p>
+            <p>Mô tả: {row?.tickets?.adult?.description}</p>
+            <p>Giá: {row?.tickets?.adult?.value}</p>
           </div>
         ) : null,
       width: "300px",
@@ -137,17 +138,17 @@ const Columns = () => {
     {
       name: "Giá vé trẻ em",
       selector: (row) =>
-        row.tickets.babi ? (
+        row?.tickets?.babi ? (
           <div>
-            <p> Mô tả: {row.tickets.babi.description}</p>
-            <p>Giá: {row.tickets.babi.value}</p>
+            <p> Mô tả: {row?.tickets?.babi?.description}</p>
+            <p>Giá: {row?.tickets?.babi?.value}</p>
           </div>
         ) : null,
       width: "400px",
     },
     {
       name: "Tổng giá",
-      selector: (row) => row.totalPriceOrder,
+      selector: (row) => row?.totalPriceOrder,
       width: "100px",
     },
   ];
