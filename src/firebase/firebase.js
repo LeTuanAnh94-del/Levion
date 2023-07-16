@@ -3,10 +3,12 @@ import { getAuth } from "firebase/auth";
 import {
   and,
   collection,
+  doc,
   getDocs,
   getFirestore,
   or,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore/lite";
 

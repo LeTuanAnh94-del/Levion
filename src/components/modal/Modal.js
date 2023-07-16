@@ -1,13 +1,52 @@
 import { FormatDate } from "@/utils/FormatDate";
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { ShowToast } from "@/utils/ShowToast";
+import { Dialog, Switch, Transition } from "@headlessui/react";
+import {
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore/lite";
+import { Fragment, useEffect, useState } from "react";
 
-const Modal = ({ isOpen, closeModal, data, updateData }) => {
+const Modal = ({ isOpen, closeModal, data }) => {
   const [isRead, setIsRead] = useState(data?.isRead || false);
 
-  const handleSave = () => {
-    updateData(data.rowIndex, isRead);
-    closeModal();
+  useEffect(() => {
+    setIsRead(data?.isRead || false);
+  }, [data]);
+
+  const updateIsReadByPhone = async (phone, newIsRead) => {
+    const db = getFirestore();
+    const ordersRef = collection(db, "orders");
+    const querySnapshot = await getDocs(
+      query(ordersRef, where("phone", "==", phone))
+    );
+
+    if (!querySnapshot.empty) {
+      const orderDoc = querySnapshot.docs[0];
+      const orderRef = doc(db, "orders", orderDoc.id);
+
+      try {
+        await updateDoc(orderRef, { isRead: newIsRead });
+
+        ShowToast("Cập nhật trạng thái thành công", "success");
+      } catch (error) {
+        ShowToast("Cập nhật không thành công", "error");
+      }
+    }
+  };
+
+  const handleIsReadChange = (checked) => {
+    setIsRead(checked);
+
+    const phone = data?.phone;
+    if (phone) {
+      updateIsReadByPhone(phone, checked);
+    }
   };
 
   if (!isOpen || !data) {
@@ -164,6 +203,26 @@ const Modal = ({ isOpen, closeModal, data, updateData }) => {
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
                       Tổng giá: {data?.totalPriceOrder}
+                    </p>
+                  </div>
+                  <div className="mt-2 flex flex-row gap-5 items-center">
+                    <Switch
+                      checked={isRead}
+                      onChange={handleIsReadChange}
+                      className={`${
+                        isRead ? "bg-teal-900" : "bg-teal-700"
+                      } relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+                    >
+                      <span className="sr-only">Toggle</span>
+                      <span
+                        aria-hidden="true"
+                        className={`${
+                          isRead ? "translate-x-9" : "translate-x-0"
+                        } pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+                      />
+                    </Switch>
+                    <p className="text-sm text-gray-500">
+                      {isRead ? "Đã duyêt" : "Chưa duyệt"}
                     </p>
                   </div>
                 </div>
