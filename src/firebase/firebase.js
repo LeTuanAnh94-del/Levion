@@ -7,6 +7,7 @@ import {
   getDocs,
   getFirestore,
   or,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -100,7 +101,10 @@ export const getOrders = async (categoryFilter, cityFilter, phoneSearch) => {
     );
   } else {
     if (categoryFilter === "" && cityFilter === "" && phoneSearch === "") {
-      queryBuilder = query(collection(db, "orders"));
+      queryBuilder = query(
+        collection(db, "orders"),
+        orderBy("createdAt", "desc")
+      );
     } else {
       queryBuilder = query(
         collection(db, "orders"),
