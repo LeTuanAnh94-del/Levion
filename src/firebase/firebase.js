@@ -3,13 +3,11 @@ import { getAuth } from "firebase/auth";
 import {
   and,
   collection,
-  doc,
   getDocs,
   getFirestore,
   or,
   orderBy,
   query,
-  updateDoc,
   where,
 } from "firebase/firestore/lite";
 
@@ -50,21 +48,42 @@ export const checkAdminRole = async (email) => {
   return role === "admin";
 };
 
-export const getOrders = async (categoryFilter, cityFilter, phoneSearch) => {
+export const getOrders = async (
+  categoryFilter,
+  cityFilter,
+  formatIsRead,
+  phoneSearch
+) => {
   if (!app) return;
 
   const db = getFirestore(app);
 
   let queryBuilder = null;
 
-  if (cityFilter && phoneSearch && categoryFilter) {
+  if (cityFilter && phoneSearch && categoryFilter && formatIsRead) {
     queryBuilder = query(
       collection(db, "orders"),
       and(
         where("city", "==", cityFilter || ""),
         where("phone", "==", phoneSearch || ""),
-        where("categoryId", "==", categoryFilter || "")
+        where("categoryId", "==", categoryFilter || ""),
+        where("isRead", "==", formatIsRead)
       )
+    );
+  } else if (categoryFilter) {
+    queryBuilder = query(
+      collection(db, "orders"),
+      and(where("categoryId", "==", categoryFilter || ""))
+    );
+  } else if (cityFilter) {
+    queryBuilder = query(
+      collection(db, "orders"),
+      and(where("city", "==", cityFilter || ""))
+    );
+  } else if (formatIsRead) {
+    queryBuilder = query(
+      collection(db, "orders"),
+      and(where("isRead", "==", formatIsRead))
     );
   } else if (categoryFilter && cityFilter) {
     queryBuilder = query(
@@ -82,6 +101,14 @@ export const getOrders = async (categoryFilter, cityFilter, phoneSearch) => {
         where("phone", "==", phoneSearch || "")
       )
     );
+  } else if (categoryFilter && formatIsRead) {
+    queryBuilder = query(
+      collection(db, "orders"),
+      and(
+        where("categoryId", "==", categoryFilter || ""),
+        where("isRead", "==", formatIsRead)
+      )
+    );
   } else if (cityFilter && phoneSearch) {
     queryBuilder = query(
       collection(db, "orders"),
@@ -90,13 +117,57 @@ export const getOrders = async (categoryFilter, cityFilter, phoneSearch) => {
         where("phone", "==", phoneSearch || "")
       )
     );
-  } else if (cityFilter && phoneSearch && categoryFilter) {
+  } else if (cityFilter && formatIsRead) {
+    queryBuilder = query(
+      collection(db, "orders"),
+      and(
+        where("city", "==", cityFilter || ""),
+        where("isRead", "==", formatIsRead)
+      )
+    );
+  } else if (phoneSearch && formatIsRead) {
+    queryBuilder = query(
+      collection(db, "orders"),
+      and(
+        where("phone", "==", phoneSearch || ""),
+        where("isRead", "==", formatIsRead)
+      )
+    );
+  } else if (categoryFilter && cityFilter && formatIsRead) {
+    queryBuilder = query(
+      collection(db, "orders"),
+      and(
+        where("city", "==", cityFilter || ""),
+        where("categoryId", "==", categoryFilter || ""),
+        where("isRead", "==", formatIsRead)
+      )
+    );
+  } else if (categoryFilter && cityFilter && phoneSearch) {
+    queryBuilder = query(
+      collection(db, "orders"),
+      and(
+        where("city", "==", cityFilter || ""),
+        where("categoryId", "==", categoryFilter || ""),
+        where("phone", "==", phoneSearch || "")
+      )
+    );
+  } else if (cityFilter && formatIsRead && phoneSearch) {
+    queryBuilder = query(
+      collection(db, "orders"),
+      and(
+        where("city", "==", cityFilter || ""),
+        where("isRead", "==", formatIsRead),
+        where("phone", "==", phoneSearch || "")
+      )
+    );
+  } else if (cityFilter && phoneSearch && categoryFilter && formatIsRead) {
     queryBuilder = query(
       collection(db, "orders"),
       and(
         where("city", "==", cityFilter || ""),
         where("phone", "==", phoneSearch || ""),
-        where("categoryId", "==", categoryFilter || "")
+        where("categoryId", "==", categoryFilter || ""),
+        where("isRead", "==", formatIsRead)
       )
     );
   } else {

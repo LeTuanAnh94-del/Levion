@@ -13,7 +13,7 @@ const DataTableComponent = memo(({ data, isLoading, height }) => {
     {
       when: (row) => row.isRead === true,
       style: {
-        backgroundColor: "skyblue",
+        backgroundColor: "#f4f2de",
       },
     },
   ];

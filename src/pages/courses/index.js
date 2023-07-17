@@ -8,7 +8,8 @@ export default function Courses() {
   const [cityFilter, setCityFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [phoneSearch, setPhoneSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isReadFilter, setIsReadFilter] = useState("");
+  const [isLoading, setIsLoading] = useState("");
 
   const { height, refHeight } = useHeight();
 
@@ -16,9 +17,20 @@ export default function Courses() {
     setIsLoading(true);
 
     try {
+      let formatIsRead = null;
+
+      if (isReadFilter === "true") {
+        formatIsRead = true;
+      }
+
+      if (isReadFilter === "false") {
+        formatIsRead = false;
+      }
+
       const orderList = await getOrders(
         categoryFilter,
         cityFilter,
+        formatIsRead,
         phoneSearch
       );
 
@@ -37,6 +49,9 @@ export default function Courses() {
   };
   const handlePhoneSearch = (e) => {
     setPhoneSearch(e.target.value);
+  };
+  const handleIsReadChange = (e) => {
+    setIsReadFilter(e.target.value);
   };
 
   const handleApplyFilter = () => {
@@ -93,6 +108,26 @@ export default function Courses() {
                   <option value="lamdong">Lâm Đồng</option>
                   <option value="hanoi">Hà Nội</option>
                   <option value="saigon">Sài Gòn</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="isRead"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Trạng thái
+                </label>
+                <select
+                  value={isReadFilter}
+                  onChange={handleIsReadChange}
+                  id="isRead"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
+                >
+                  <option value="" selected={false}>
+                    Chọn trạng thái
+                  </option>
+                  <option value={true}>Đã duyệt</option>
+                  <option value={false}>Chưa duyệt</option>
                 </select>
               </div>
             </div>
